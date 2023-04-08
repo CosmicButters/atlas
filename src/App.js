@@ -7,6 +7,11 @@ import Nodes from "./pages/Nodes";
 function App() {
     return (
         <Router>
+            <nav>
+                <Link to="/">Home</Link>
+                <Link to="/nodes">Nodes</Link>
+                <Link to="/login">Login</Link>
+            </nav>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/nodes" element={<Nodes />} />
