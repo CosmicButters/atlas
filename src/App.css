@@ -1,5 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+body {
+  font-family: "Orbitron", sans-serif;
+  background-color: #000;
+  overflow: hidden;
+  position: relative;
+}
+
 .App {
   text-align: center;
+}
+
+.star {
+  position: absolute;
+  background-color: #fff;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  animation: twinkle 1.5s infinite ease-in-out alternate;
+}
+
+@keyframes twinkle {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
 
 nav {
@@ -15,18 +44,16 @@ h1 {
   text-align: center;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #333;
+  color: #f0eeee;
   text-shadow: 2px 2px 0 #fff, 4px 4px 0 #555;
   line-height: 3;
-  font-family: "Space Mono", monospace; /* sets the font family to Space Mono */
 }
-
 
 nav ul {
   margin: 0;
   padding: 0;
   list-style: none;
-  display: flex; /* sets the display property of the list items to flex */
+  display: flex;
 }
 
 nav li {
@@ -35,7 +62,7 @@ nav li {
 }
 
 nav a {
-  display: inline-block; /* displays the links as inline-block level elements */
+  display: inline-block;
   padding: 1rem;
   color: #fff;
   text-decoration: none;

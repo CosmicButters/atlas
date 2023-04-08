@@ -1,0 +1,26 @@
+body {
+    background-color: #000;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .star {
+    position: absolute;
+    background-color: #fff;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    animation: twinkle 1.5s infinite ease-in-out alternate;
+  }
+  
+  @keyframes twinkle {
+    from {
+      transform: scale(1);
+      opacity: 1;
+    }
+    to {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+  

@@ -3,10 +3,12 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Nodes from "./pages/Nodes";
+import StarryBackground from "./StarryBackground";
 
 function App() {
     return (
         <Router>
+            <StarryBackground />
             <nav>
                 <Link to="/">Home</Link>
                 <Link to="/nodes">Nodes</Link>
@@ -20,4 +22,5 @@ function App() {
         </Router>
     );
 }
+
 export default App;
