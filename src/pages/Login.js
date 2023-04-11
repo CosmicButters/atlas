@@ -1,9 +1,11 @@
-import React from "react";
+import { useState } from "react";
+import { Auth } from "../components/auth";
 
 function Login() {
     return (
-        <div>
-            <h1>Login</h1>
+        <div className="login-container">
+            <h1>Atlas</h1>
+            <Auth />
         </div>
     );
 }

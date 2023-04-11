@@ -88,9 +88,9 @@ export default function App() {
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
             >
-                {/* <Controls /> */}
-                {/* <MiniMap /> */}
-                {/* <Background variant="dots" gap={25} size={1} /> */}
+                <Controls />
+                <MiniMap />
+                <Background variant="dots" gap={25} size={1} />
             </ReactFlow>
         </div>
     );
