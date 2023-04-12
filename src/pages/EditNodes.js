@@ -9,6 +9,8 @@ import {
     query,
     updateDoc,
     doc,
+    deleteDoc,
+    setDoc,
 } from "firebase/firestore";
 import MiniMapNode from "../components/minimapnode";
 
@@ -28,6 +30,7 @@ const initialNodes = [];
 const initialEdges = [];
 const proOptions = { hideAttribution: true };
 
+// Properties for node
 const CircleNode = ({ data }) => {
     return (
         <div
@@ -82,10 +85,7 @@ export default function App() {
                         id: doc.id,
                     }));
                     setNodeList(filteredNodeData);
-                    console.log(filteredNodeData);
                 });
-
-                // Cleanup subscription on unmount
                 return () => {
                     unsubscribe();
                 };
@@ -107,7 +107,6 @@ export default function App() {
                     id: doc.id,
                 }));
                 setEdgeList(filteredEdgeData);
-                console.log(filteredEdgeData);
             } catch (err) {
                 console.log(err);
             }
@@ -155,6 +154,7 @@ export default function App() {
             console.log(err);
         }
     };
+
     // update node position
     const updateNodePosition = async (nodeId, position) => {
         try {
@@ -204,7 +204,6 @@ export default function App() {
                     <Background variant="dots" gap={25} size={1} />
                 </ReactFlow>
                 <button onClick={createNewNode}>Add Node</button>
-                {/* <button onClick={saveNodes}>Save Changes</button> */}
             </div>
         </div>
     );
