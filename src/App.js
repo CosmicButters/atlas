@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./pages/Login";
-import Home from "./pages/Home";
+import Edit from "./pages/EditNodes";
 import Nodes from "./pages/Nodes";
 import StarryBackground from "./StarryBackground";
 
@@ -10,14 +10,15 @@ function App() {
         <Router>
             <StarryBackground />
             <nav>
-                <Link to="/">Home</Link>
-                <Link to="/nodes">Nodes</Link>
-                <Link to="/login">Login</Link>
+                <Link to="/edit">Edit</Link>
+                {/* <Link to="/nodes">Nodes</Link> */}
+                <Link to="/">Login</Link>
+                <Link to="/">Logout</Link>
             </nav>
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/edit" element={<Edit />} />
                 <Route path="/nodes" element={<Nodes />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<Login />} />
             </Routes>
         </Router>
     );

@@ -11,9 +11,19 @@ body {
     text-align: center;
 }
 
+/* Change the MiniMap background color */
+.react-flow__minimap-mask {
+    background-color: #cb0808; /* Replace this with your desired background color */
+}
+
+/* Change the MiniMap node color */
+.react-flow__minimap-node {
+    background-color: #8b0000; /* Replace this with your desired node color */
+}
+
 .star {
     position: absolute;
-    background-color: #fff;
+    background-color: #d2a24c;
     width: 2px;
     height: 2px;
     border-radius: 50%;
@@ -57,14 +67,15 @@ body {
     width: 100%;
     padding: 20px;
     border-radius: 5px;
-    background-color: #333333;
+    background-color: #6f5643;
 }
 
 input {
+    font-family: "Orbitron", sans-serif;
     background-color: #444444;
     border: none;
     border-radius: 5px;
-    color: white;
+    color: #ece6c2;
     font-size: 16px;
     margin: 5px;
     padding: 10px;
@@ -72,10 +83,11 @@ input {
 }
 
 button {
-    background-color: #c67000;
+    font-family: "Orbitron", sans-serif;
+    background-color: #cc6b49;
     border: none;
     border-radius: 5px;
-    color: white;
+    color: #ece6c2;
     cursor: pointer;
     font-size: 16px;
     margin: 5px;
@@ -84,7 +96,7 @@ button {
 }
 
 button:hover {
-    background-color: #d57900;
+    background-color: #d2a24c;
 }
 
 h1 {
@@ -93,8 +105,8 @@ h1 {
     text-align: center;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #ffffffd7;
-    text-shadow: 4px 4px 0 #c67000;
+    color: #ece6c2;
+    text-shadow: 4px 4px 0 #cc6b49;
     line-height: 1;
     margin-bottom: 10px;
 }
@@ -105,17 +117,17 @@ h2 {
     text-align: center;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #ffffffd7;
-    text-shadow: 2px 2px 0 #c67000;
+    color: #ece6c2;
+    text-shadow: 2px 2px 0 #d2a24c;
     line-height: 1;
     margin-bottom: 0;
     margin-top: 0;
 }
 nav {
-    background-color: #c67000;
+    background-color: #cc6b49;
     display: flex;
     justify-content: center;
-    width: 50%;
+    width: 35%;
     height: 50px;
     z-index: 100;
     margin: 0 auto;
@@ -137,12 +149,12 @@ nav li {
 nav a {
     display: inline-block;
     padding: 1rem;
-    color: #fff;
+    color: #ece6c2;
     text-decoration: none;
     transition: background-color 0.2s ease-out;
     text-align: center;
 }
 
 nav a:hover {
-    background-color: #555;
+    background-color: #d2a24c;
 }
