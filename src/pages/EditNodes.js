@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../config/firebase";
+import CircleNode from "../components/CircleNode";
 import {
     getDocs,
     collection,
@@ -30,44 +31,14 @@ const initialNodes = [];
 const initialEdges = [];
 const proOptions = { hideAttribution: true };
 
-// Properties for node
-const CircleNode = ({ data }) => {
-    return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                height: "100%",
-            }}
-        >
-            <Handle type="target" position="top" />
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "50px",
-                    height: "50px",
-                    borderRadius: "25px",
-                    backgroundColor: "#d2a24c",
-                }}
-            >
-                {data.label}
-            </div>
-            <Handle type="source" position="bottom" />
-        </div>
-    );
-};
-
 export default function App() {
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
     const [nodeList, setNodeList] = useState([]);
     const [edgeList, setEdgeList] = useState([]);
+    const [tempNodePositions, setTempNodePositions] = useState({});
+    const [tempEdges, setTempEdges] = useState([]);
 
     const [addNode, setAddNode] = useState([]);
 
@@ -154,9 +125,30 @@ export default function App() {
             console.log(err);
         }
     };
+    //temp Save
+    const saveFlow = async () => {
+        try {
+            // Save node positions
+            for (const nodeId in tempNodePositions) {
+                const nodeRef = doc(db, "nodes", nodeId);
+                const position = tempNodePositions[nodeId];
+                await updateDoc(nodeRef, {
+                    x: position.x,
+                    y: position.y,
+                });
+            }
 
-    const saveFlow = () => {
-        console.log("save");
+            // Save edges
+            for (const edge of tempEdges) {
+                await addDoc(edgeCollectionRef, edge);
+            }
+
+            // Clear the temporary node positions and edges after saving
+            setTempNodePositions({});
+            setTempEdges([]);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     // edit edge
@@ -172,34 +164,26 @@ export default function App() {
     };
 
     // update node position
-    const updateNodePosition = async (nodeId, position) => {
-        try {
-            const nodeRef = doc(db, "nodes", nodeId);
-            await updateDoc(nodeRef, {
-                x: position.x,
-                y: position.y,
-            });
-        } catch (err) {
-            console.log(err);
-        }
+    const updateNodePosition = (nodeId, position) => {
+        setTempNodePositions((prevPositions) => ({
+            ...prevPositions,
+            [nodeId]: position,
+        }));
     };
 
-    //
+    //edge Connect
     const onConnect = useCallback(
-        async (params) => {
-            try {
-                setEdges((eds) => addEdge(params, eds));
-
-                await addDoc(edgeCollectionRef, {
+        (params) => {
+            setTempEdges((prevEdges) => [
+                ...prevEdges,
+                {
                     source: params.source,
                     target: params.target,
                     animated: params.animated || false,
-                });
-            } catch (err) {
-                console.log(err);
-            }
+                },
+            ]);
         },
-        [setEdges, edgeCollectionRef]
+        [setTempEdges]
     );
 
     return (
@@ -207,7 +191,7 @@ export default function App() {
             <div className="react-flow-wrapper">
                 <ReactFlow
                     nodes={nodes}
-                    edges={edges}
+                    edges={[...edges, ...tempEdges]}
                     nodeTypes={{ circle: CircleNode }}
                     onNodesChange={onNodesChange}
                     onEdgesChange={onEdgesChange}
