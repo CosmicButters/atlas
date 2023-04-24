@@ -4,6 +4,9 @@
 /.pnp
 .pnp.js
 
+/atlas/src/config/firebase.js
+
+
 # testing
 /coverage
 
@@ -21,6 +24,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-#ignore
-.config
+
 
