@@ -22,4 +22,4 @@ yarn-debug.log*
 yarn-error.log*
 
 #ignore
-./src/config/firebase.js
+atlas\src\config\firebase.js
