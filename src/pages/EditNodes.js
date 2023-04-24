@@ -111,7 +111,6 @@ export default function App() {
                 console.log(err);
             }
         };
-
         getEdgeList();
     }, []);
 
@@ -138,6 +137,7 @@ export default function App() {
             };
         });
         setEdges(newEdges);
+        console.log(newEdges);
     }, [edgeList]);
 
     // Add new node
@@ -149,6 +149,22 @@ export default function App() {
                 type: "circle",
                 label: "New Node",
                 avaliable: true,
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const saveFlow = () => {
+        console.log("save");
+    };
+
+    // edit edge
+    const onEdgeClick = async (event, edge) => {
+        try {
+            const edgeRef = doc(db, "edge", edge.id);
+            await updateDoc(edgeRef, {
+                animated: !edge.animated,
             });
         } catch (err) {
             console.log(err);
@@ -168,9 +184,22 @@ export default function App() {
         }
     };
 
+    //
     const onConnect = useCallback(
-        (params) => setEdges((eds) => addEdge(params, eds)),
-        [setEdges]
+        async (params) => {
+            try {
+                setEdges((eds) => addEdge(params, eds));
+
+                await addDoc(edgeCollectionRef, {
+                    source: params.source,
+                    target: params.target,
+                    animated: params.animated || false,
+                });
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        [setEdges, edgeCollectionRef]
     );
 
     return (
@@ -182,6 +211,7 @@ export default function App() {
                     nodeTypes={{ circle: CircleNode }}
                     onNodesChange={onNodesChange}
                     onEdgesChange={onEdgesChange}
+                    onEdgeClick={onEdgeClick}
                     onConnect={onConnect}
                     onNodeDragStop={(event, node) =>
                         updateNodePosition(node.id, {
@@ -204,6 +234,7 @@ export default function App() {
                     <Background variant="dots" gap={25} size={1} />
                 </ReactFlow>
                 <button onClick={createNewNode}>Add Node</button>
+                <button onClick={saveFlow}>Save</button>
             </div>
         </div>
     );
