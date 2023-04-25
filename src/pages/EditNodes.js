@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../config/firebase";
 import CircleNode from "../components/CircleNode";
@@ -12,6 +12,7 @@ import {
     doc,
     deleteDoc,
     setDoc,
+    DocumentReference,
 } from "firebase/firestore";
 import MiniMapNode from "../components/minimapnode";
 
@@ -32,6 +33,8 @@ const initialEdges = [];
 const proOptions = { hideAttribution: true };
 
 export default function App() {
+    const nodeTypes = useMemo(() => ({ circle: CircleNode }), []);
+
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
@@ -39,8 +42,6 @@ export default function App() {
     const [edgeList, setEdgeList] = useState([]);
     const [tempNodePositions, setTempNodePositions] = useState({});
     const [tempEdges, setTempEdges] = useState([]);
-
-    const [addNode, setAddNode] = useState([]);
 
     const nodeCollectionRef = collection(db, "nodes");
     const edgeCollectionRef = collection(db, "edge");
@@ -85,7 +86,7 @@ export default function App() {
         getEdgeList();
     }, []);
 
-    // set nodes from firebase
+    // set nodes to firebase
     useEffect(() => {
         const newNodes = nodeList.map((node) => {
             return {
@@ -98,7 +99,7 @@ export default function App() {
         setNodes(newNodes);
     }, [nodeList]);
 
-    // set edges from firebase
+    // set edges to firebase
     useEffect(() => {
         const newEdges = edgeList.map((edge) => {
             return {
@@ -115,7 +116,7 @@ export default function App() {
     const createNewNode = async () => {
         try {
             await addDoc(nodeCollectionRef, {
-                x: 50,
+                x: 100,
                 y: 100,
                 type: "circle",
                 label: "New Node",
@@ -151,13 +152,12 @@ export default function App() {
         }
     };
 
-    // edit edge
-    const onEdgeClick = async (event, edge) => {
+    // Delete node
+    const deleteNode = async (node) => {
         try {
-            const edgeRef = doc(db, "edge", edge.id);
-            await updateDoc(edgeRef, {
-                animated: !edge.animated,
-            });
+            console.log(node.id);
+            const nodeRef = doc(nodeCollectionRef, node);
+            await deleteDoc(nodeRef);
         } catch (err) {
             console.log(err);
         }
@@ -174,6 +174,8 @@ export default function App() {
     //edge Connect
     const onConnect = useCallback(
         (params) => {
+            console.log(params);
+
             setTempEdges((prevEdges) => [
                 ...prevEdges,
                 {
@@ -192,10 +194,11 @@ export default function App() {
                 <ReactFlow
                     nodes={nodes}
                     edges={[...edges, ...tempEdges]}
-                    nodeTypes={{ circle: CircleNode }}
+                    nodeTypes={nodeTypes}
                     onNodesChange={onNodesChange}
                     onEdgesChange={onEdgesChange}
-                    onEdgeClick={onEdgeClick}
+                    onNodeClick={deleteNode}
+                    // onEdgeClick={onEdgeClick}
                     onConnect={onConnect}
                     onNodeDragStop={(event, node) =>
                         updateNodePosition(node.id, {

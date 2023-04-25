@@ -5,7 +5,7 @@
 /node_modules/
 /coverage/
 /build/
-/src/config/
+/src/config/*
 
 # Ignore local environment files
 .env.local
